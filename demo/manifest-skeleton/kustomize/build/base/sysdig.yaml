@@ -1,0 +1,36 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sysdig
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/categories: Security
+    tekton.dev/tags: Security
+spec:
+  description: >-
+    This Task scans Comprehensive Vulnerability using Sysdig for Containers
+    and other Artifacts, Suitable in CI.
+  workspaces:
+    - name: db
+  params:
+  - name: IMAGE
+    description: Reference of the image Sysdig will scan.
+  - name: IMAGE_DIGEST
+    description: Reference of the image digest Sysdig will scan.
+  steps:
+  - name: scan-image-step
+    image: image-registry.openshift-image-registry.svc:5000/nodejs-sample-demo-develop/sysdig-scanner:latest 
+    args: ["--apiurl", "$(SYSDIG_API_URL)", "$(IMAGE_TO_SCAN)", "--dbpath", "$(workspaces.db.path)", "--cachepath", "$(workspaces.db.path)"]
+    env:
+    - name: IMAGE_TO_SCAN
+      value: $(params.IMAGE)@$(params.IMAGE_DIGEST)
+      #value: $(params.IMAGE)
+    - name: SYSDIG_API_URL
+      value: "https://us2.app.sysdig.com"
+    - name: SECURE_API_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: sysdig-secure-token
+          key: api_token

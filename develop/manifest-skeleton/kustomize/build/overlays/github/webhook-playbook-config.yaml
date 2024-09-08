@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webhook-playbook
+data:
+  playbook.yaml: |
+    {%- if values.git == 'github' %}
+    - hosts: localhost
+      vars_files:
+        - /secrets/env.yml
+      vars:
+        git_host_url: ${{ values.git_host_url }}
+        git_owner: ${{ values.git_owner_name }}
+        git_repo: ${{ values.app_name }}-app
+        webhook_url: "webhook-${{ values.app_name }}-el-${{ values.app_name }}-develop" 
+      tasks:
+        - name: Get current webhook
+          uri:
+            url: "https://api.{{ git_host_url }}/repos/{{ git_owner }}/{{ git_repo }}/hooks" 
+            method: GET
+            return_content: true
+            validate_certs: false
+            status_code: 200
+            headers:
+              Authorization: "Bearer {{ git_token }}"
+              Accept: application/vnd.github+json
+          register: r_github_hooks
+      
+        - name: Create webhook
+          when: r_github_hooks.json | length == 0
+          uri:
+            url: "https://api.{{ git_host_url }}/repos/{{ git_owner }}/{{ git_repo }}/hooks" 
+            method: POST
+            return_content: true
+            validate_certs: false
+            body_format: json
+            status_code: 201
+            headers:
+              Authorization: "Bearer {{ git_token }}"
+              Accept: application/vnd.github+json
+            body: >-
+              {
+                "name": "web",
+                "active": true,
+                "events": [
+                    "push",
+                ],
+                "config":{
+                    "url": "https://{{ webhook_url }}.{{ cluster_url }}",
+                    "secret": "{{ webhook_secret }}",
+                    "content_type": "json",
+                    "insecure_ssl": "0"
+                }
+              }
+    {%- endif %}
+    {%- if values.git == 'gitlab' %}
+    - hosts: localhost
+      vars_files:
+        - /secrets/env.yml
+      vars:
+        git_host_url: ${{ values.git_host_url }}
+        git_owner: ${{ values.git_owner_name }}
+        git_repo: ${{ values.app_name }}-app
+        git_app: ${{ values.app_name }}-app
+        #git_token: ""
+        webhook_url: "webhook-${{ values.app_name }}-el-${{ values.app_name }}-develop"
+        #cluster_url: ""
+        #webhook_url: https://webhook-${{ values.app_name }}-el-${{ values.app_name }}-dev.apps.aws-cluster-01.sandbox1966.opentlc.com
+        #webhook_secret: ""
+      tasks:
+        - name: Get gitlab projects
+          ansible.builtin.uri:
+            url: https://{{ git_host_url }}/api/v4/projects
+            method: GET
+            body_format: form-urlencoded
+            headers:
+              PRIVATE-TOKEN: "{{  git_token }}"
+            validate_certs: false
+            status_code: [200]
+          register: r_git_projects
+
+        - name: set gitlab projects id
+          set_fact:
+            git_project_id: '{{ r_git_projects.json | json_query(query) }}'
+          vars:
+            query: "[?name=='{{ git_app }}'].id"
+
+        - name: Create {{ git_app }} web hook
+          ansible.builtin.uri:
+            url: https://{{ git_host_url }}/api/v4/projects/{{ git_project_id[0] }}/hooks
+            method: POST
+            body_format: form-urlencoded
+            body:
+              url: "https://{{ webhook_url }}.{{ cluster_url}}"
+              push_events: true
+              tag_push_events: true
+              releases_events: true
+              token: "{{ webhook_secret }}"
+            headers:
+              PRIVATE-TOKEN: "{{ git_token }}"
+            validate_certs: false
+            status_code: [201]
+    {%- endif %}

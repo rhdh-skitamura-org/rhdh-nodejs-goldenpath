@@ -1,0 +1,14 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: es-stackrox-api-token
+spec:
+  secretStoreRef:
+    name: awssm
+    kind: ClusterSecretStore
+  target: # ExternalSecret から作成されるKubernetes Secretを指定する
+    name: rox-api-token
+  data: # 取得する秘匿情報を指定する
+  - secretKey: rox_api_token # 作成するSecretのkeyを指定
+    remoteRef:
+      key: stackrox-api-token # AWS Secrets Managerに登録したシークレット名
