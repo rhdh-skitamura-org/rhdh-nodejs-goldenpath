@@ -20,7 +20,7 @@ spec:
         app_name:
           title: Repository Name
           type: string
-          default: "nodejs-sample"
+          default: "nodejs-develop"
         description:
           title: Description
           type: string
