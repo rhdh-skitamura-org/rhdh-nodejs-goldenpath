@@ -228,17 +228,17 @@ spec:
         username: ${{ parameters.sonarqube_username }}
         password: ${{ parameters.sonarqube_password }}
 
-    - id: create-quay-repository
-      name: Create Quay Repository
-      action: quay:create-repository
-      input:
-        name: ${{ parameters.app_name }}-develop/${{ parameters.app_name }}-record
-        visibility: private
-        description: ${{ parameters.app_name }} image
-        #token: ${{ parameters.quay_token }}
-        namespace: skitamura-quay-org
-        token: qiANxSr7qHAigRcwgEhYdZ1967FwtvRxBm0kukQB 
-        baseUrl: http://quay-registry-quay-app.quay.svc
+    #- id: create-quay-repository
+    #  name: Create Quay Repository
+    #  action: quay:create-repository
+    #  input:
+    #    name: ${{ parameters.app_name }}-develop/${{ parameters.app_name }}-record
+    #    visibility: private
+    #    description: ${{ parameters.app_name }} image
+    #    #token: ${{ parameters.quay_token }}
+    #    namespace: skitamura-quay-org
+    #    token: qiANxSr7qHAigRcwgEhYdZ1967FwtvRxBm0kukQB 
+    #    baseUrl: http://quay-registry-quay-app.quay.svc
 
   output:
     links:
