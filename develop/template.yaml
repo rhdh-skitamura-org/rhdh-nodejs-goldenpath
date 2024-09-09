@@ -47,10 +47,6 @@ spec:
           title: Cluster URL
           type: string
           default: "apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com"
-        cluster_url:
-          title: Cluster URL
-          type: string
-          default: "apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com"
         sonarqube_username:
           type: string
           ui:widget: hidden
@@ -84,6 +80,7 @@ spec:
                 registry_url:
                   title: Image Registry Host URL
                   type: string
+                  default: "image-registry.openshift-image-registry.svc:5000"
                   description: Host for storing image URL
             - properties:
                 registry:
