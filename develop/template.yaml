@@ -84,7 +84,6 @@ spec:
                 registry_url:
                   title: Image Registry Host URL
                   type: string
-                  default: "image-registry.:"
                   description: Host for storing image URL
             - properties:
                 registry:
