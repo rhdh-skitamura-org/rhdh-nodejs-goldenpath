@@ -72,7 +72,7 @@ spec:
           value: $(params.SONAR_ORGANIZATION)
       script: |
         #!/usr/bin/env bash
-
+        mkdir $(workspaces.sonar-settings.path)/.scannerwork
         replaceValues() {
           filename=$1
           thekey=$2
