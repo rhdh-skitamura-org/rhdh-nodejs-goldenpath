@@ -48,7 +48,7 @@ spec:
       default: ""
     - name: SONAR_SCANNER_IMAGE
       description: "The sonarqube scanner CLI image which will run the scan"
-      default: "docker.io/sonarsource/sonar-scanner-cli:10.0"
+      default: "docker.io/sonarsource/sonar-scanner-cli:5.0"
     - name: SONAR_LOGIN_KEY
       description: Name of the file of the login within the sonarqube credentials workspace
       default: "login"
@@ -72,7 +72,6 @@ spec:
           value: $(params.SONAR_ORGANIZATION)
       script: |
         #!/usr/bin/env bash
-        mkdir $(workspaces.source.path)/.scannerwork
         replaceValues() {
           filename=$1
           thekey=$2
