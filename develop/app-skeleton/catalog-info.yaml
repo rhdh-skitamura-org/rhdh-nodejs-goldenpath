@@ -35,7 +35,7 @@ metadata:
     #circleci.com/project-slug: ${{ values.git }}/${{ values.git_owner_name }}/${{ values.app_name }}-app
     sonarqube.org/project-key: ${{ values.app_name }}
     jira/project-key: KAN
-    quay.io/repository-slug: skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}-record
+    quay.io/repository-slug: skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}
 spec:
   type: api 
   system: ${{ values.system | dump }}
