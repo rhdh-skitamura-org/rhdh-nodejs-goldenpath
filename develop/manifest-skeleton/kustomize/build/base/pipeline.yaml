@@ -129,26 +129,26 @@ spec:
     - name: rox_api_token
       value: rox-api-token
 
-#  - name: scan-image-sysdig
-#    taskRef:
-#      name: sysdig
-#    runAfter:
-#    - build-container
-#    params:
-#    - name: IMAGE
-#      value: image-registry.openshift-image-registry.svc:5000/${{ values.app_name }}-develop/${{ values.app_name }}
-#    - name: IMAGE_DIGEST
-#      value: $(tasks.build-container.results.IMAGE_DIGEST)
-#    workspaces:
-#    - name: db
-#      workspace: shared-workspace
+  - name: scan-image-sysdig
+    taskRef:
+      name: sysdig
+    runAfter:
+    - build-container
+    params:
+    - name: IMAGE
+      value: $(params.image-registry)/${{ values.app_name }}
+    - name: IMAGE_DIGEST
+      value: $(tasks.build-container.results.IMAGE_DIGEST)
+    workspaces:
+    - name: db
+      workspace: shared-workspace
 
   - name: update-manifests
     taskRef:
       kind: Task
       name: kustomize
     runAfter:
-    #- scan-image-sysdig
+    - scan-image-sysdig
     - scan-image-rhacs
     workspaces:
     - name: manifest-dir

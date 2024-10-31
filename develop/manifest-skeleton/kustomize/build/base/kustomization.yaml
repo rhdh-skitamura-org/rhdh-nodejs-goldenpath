@@ -14,7 +14,7 @@ resources:
   - git-clone.yaml
   - kustomize.yaml
   - trivy.yaml
-  - sysdig.yaml
+  - sysdig-inline-scan.yaml
   - stackrox-scan.yaml
   - argocd-sync.yaml
   # preparations
