@@ -23,7 +23,7 @@ spec:
   - name: scan-image-step
     #image: image-registry.openshift-image-registry.svc:5000/nodejs-sample-demo-develop/sysdig-scanner:latest 
     image: ghcr.io/sysdiglabs/sysdig-cli-scanner:1.2.10 
-    args: ["--apiurl", "$(SYSDIG_API_URL)", "$(IMAGE_TO_SCAN)", "--dbpath", "$(workspaces.db.path)", "--cachepath", "$(workspaces.db.path)"]
+    args: ["--apiurl", "$(SYSDIG_API_URL)", "$(IMAGE_TO_SCAN)", "--dbpath", "$(workspaces.db.path)/cache/db/", "--cachepath", "$(workspaces.db.path)/cache/scanner-cache/"]
     env:
     - name: IMAGE_TO_SCAN
       value: $(params.IMAGE)@$(params.IMAGE_DIGEST)
