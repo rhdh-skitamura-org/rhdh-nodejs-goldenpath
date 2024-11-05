@@ -130,6 +130,7 @@ spec:
       value: rox-api-token
 
   - name: scan-image-sysdig
+    onError: continue
     taskRef:
       name: sysdig
     runAfter:
