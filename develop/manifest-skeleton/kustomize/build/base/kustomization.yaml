@@ -32,6 +32,7 @@ resources:
   - es-sysdig-secure-token.yaml
   - es-stackrox-api-token.yaml
   - es-quay-credentials.yaml
+  - es-quay-basic-auth.yaml
   - es-argocd-credentials.yaml
   # configmaps
   - cm-argocd.yaml
