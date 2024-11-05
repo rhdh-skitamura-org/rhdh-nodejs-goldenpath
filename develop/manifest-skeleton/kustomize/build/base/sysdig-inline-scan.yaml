@@ -35,3 +35,13 @@ spec:
         secretKeyRef:
           name: sysdig-secure-token
           key: api_token
+    - name: REGISTRY_USER
+      valueFrom:
+        secretKeyRef:
+          name: quay-basic-auth
+          key: username
+    - name: REGISTRY_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: quay-basic-auth
+          key: password
