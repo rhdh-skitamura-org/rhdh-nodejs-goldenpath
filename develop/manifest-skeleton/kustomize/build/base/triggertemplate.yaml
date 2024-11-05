@@ -24,7 +24,7 @@ spec:
       spec:
         pipelineRef:
           name: ${{ values.app_name }}-pipeline
-        serviceAccountName: pipeline-sa
+        serviceAccountName: pipeline
         params:
           - name: git-url
             value: $(tt.params.git-app-url)
