@@ -97,8 +97,8 @@ spec:
 
   - name: build-container
     taskRef:
-      name: buildah
-      kind: ClusterTask
+      name: buildah-docker
+      kind: Task
     runAfter:
     - scan-app
     workspaces:

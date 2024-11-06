@@ -11,6 +11,7 @@ resources:
   # tasks
   - sonarqube.yaml
   - git-cli.yaml
+  - buildah-docker.yaml
   - git-clone.yaml
   - kustomize.yaml
   - trivy.yaml
