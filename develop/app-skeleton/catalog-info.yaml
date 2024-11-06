@@ -38,8 +38,9 @@ metadata:
     quay.io/repository-slug: skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}
     sysdigcloud.com/kubernetes-namespace-name: ${{ values.app_name }}-develop
     sysdigcloud.com/kubernetes-workload-type: deployment
+    sysdigcloud.com/kubernetes-workload-name: ${{ values.app_name }} 
     sysdigcloud.com/kubernetes-cluster-name: rosa-hcp-1544
-    sysdigcloud.com/registry-name: quay-registry-quay-quay.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com/skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}
+    sysdigcloud.com/registry-name: quay-registry-quay-quay.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com
     sysdigcloud.com/registry-repository: ${{ values.app_name }}-develop/${{ values.app_name }}
     sysdigcloud.com/kubernetes-distribution: OCP4
     sysdigcloud.com/resource-name: ${{ values.app_name }}-develop
