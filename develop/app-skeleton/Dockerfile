@@ -24,7 +24,7 @@ ENV NODE_ENV production
 
 # Update vulnerable package versions
 USER root
-RUN sed -i 's/"version": "3.0.2"/"version": "3.0.3"/' /usr/lib/node_modules/nodemon/node_modules/braces/package.json
+RUN rm -rf /usr/lib/node_modules/nodemon 
 
 # Switch to nodejs user
 USER 1001
