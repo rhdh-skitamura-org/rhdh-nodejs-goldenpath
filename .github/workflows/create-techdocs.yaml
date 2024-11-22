@@ -22,7 +22,7 @@ jobs:
       ENTITY_NAMESPACE: 'default'
       ENTITY_KIND: 'Template'
       #ENTITY_NAME: ${{ github.event.repository.name }}-app
-      ENTITY_NAME: rhdh-nodejs-goldenpath
+      ENTITY_NAME: nodejs-sample-app-template-develop
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
