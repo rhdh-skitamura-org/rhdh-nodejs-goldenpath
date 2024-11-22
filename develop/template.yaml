@@ -51,12 +51,14 @@ spec:
           default: "apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com"
         sonarqube_username:
           type: string
-          ui:widget: hidden
           default: "admin"
+          ui:field: Secret
+          ui:widget: hidden
         sonarqube_password:
           type: string
-          ui:widget: hidden
           default: "adminadmin"
+          ui:field: Secret
+          ui:widget: hidden
 
     - title: Provide Image Registry Information
       required:

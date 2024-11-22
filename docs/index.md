@@ -1,4 +1,27 @@
-## Create a Node.js sample application with a CI pipeline for development 
+# Node.js sample application with CI/CD
+このGolden Pathは、OpenShift上にCI/CDパイプラインを備えたNode.jsのサンプルアプリケーションをデプロイします。
+
+## デプロイされるリポジトリ
+このGolden Pathを実行すると以下の2種類のRepositoryがデプロイされます。
+* <application name>-app: 主にアプリケーションのサンプルコードとDockefileを格納するリポジトリ
+* <application name>-manigest: アプリケーションのデプロイに必要なK8sマニフェストや、CI/CDの実行に必要な各種ファイルを扱うリポジトリ
+
+## 使い方
+Software Templates実行画面で
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Provides the sample code and CI pipeline to build and deploy a sample application on OpenShift.
 
