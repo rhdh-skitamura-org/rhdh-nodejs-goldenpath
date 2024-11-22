@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: nodejs-sample-app-template-develop
-  title: Create a Node.js sample application with a CI pipeline for development
+  title: Node.js sample application with CI/CD
   description: Provides the sample code and CI pipeline to build and deploy a sample application on OpenShift. 
   tags:
     - recommended

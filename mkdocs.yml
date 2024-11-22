@@ -1,5 +1,5 @@
-site_name: Create a Node.js sample application with a CI pipeline for development
-site_description: Provides the sample code and CI pipeline to build and deploy a sample application on OpenShift.
+site_name: Node.js sample application with CI/CD
+site_description: The sample code and CI pipeline to build and deploy a sample application on OpenShift.
 repo_url: https://github.com/rhdh-skitamura-org/rhdh-nodejs-goldenpath
 edit_uri: edit/main/docs
 
