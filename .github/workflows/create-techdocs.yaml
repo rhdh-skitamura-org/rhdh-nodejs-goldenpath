@@ -20,7 +20,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ap-northeast-1
       ENTITY_NAMESPACE: 'default'
-      ENTITY_KIND: 'Component'
+      ENTITY_KIND: 'Template'
       #ENTITY_NAME: ${{ github.event.repository.name }}-app
       ENTITY_NAME: rhdh-nodejs-goldenpath
     steps:
