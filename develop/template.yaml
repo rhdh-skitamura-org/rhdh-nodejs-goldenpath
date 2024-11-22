@@ -119,6 +119,16 @@ spec:
                   type: string
                   description: Specify the GitHub Organization or User to register the repository
                   default: rhdh-skitamura-org
+                ci_tool:
+                  title: CI Methodology
+                  description: Methodology to run CI pipelines for applications
+                  type: string
+                  enum:
+                    - tekton
+                    - github-actions
+                  enumNames:
+                    - Tekton
+                    - GitHub Actions
             - properties:
                 git:
                   enum:
@@ -133,6 +143,16 @@ spec:
                   type: string
                   description: Specify the GitLab Group or User to register the repository
                   default: rhdh-skitamura-group
+                ci_tool:
+                  title: CI Methodology
+                  description: Methodology to run CI pipelines for applications
+                  type: string
+                  enum:
+                    - tekton
+                    - gitlab-ci
+                  enumNames:
+                    - Tekton
+                    - GitLab CI
   steps:
     - id: app-template
       name: Generating the Application Source Code Component
