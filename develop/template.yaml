@@ -132,7 +132,7 @@ spec:
                       - Tekton
                       - GitHub Actions
                   uniqueItems: true                  
-                  ui:widget: checkboxes
+                  ui:widget: radio
             - properties:
                 git:
                   enum:
@@ -160,7 +160,7 @@ spec:
                       - Tekton
                       - GitHub Actions
                   uniqueItems: true                  
-                  ui:widget: checkboxes
+                  ui:widget: radio
   steps:
     - id: app-template
       name: Generating the Application Source Code Component
