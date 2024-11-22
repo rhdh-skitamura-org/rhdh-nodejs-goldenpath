@@ -49,16 +49,6 @@ spec:
           title: Cluster URL
           type: string
           default: "apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com"
-        sonarqube_username:
-          type: string
-          default: "admin"
-          ui:field: Secret
-          ui:widget: hidden
-        sonarqube_password:
-          type: string
-          default: "adminadmin"
-          ui:field: Secret
-          ui:widget: hidden
 
     - title: Provide Image Registry Information
       required:
@@ -269,8 +259,8 @@ spec:
         name: ${{ parameters.app_name }}
         key: ${{ parameters.app_name }}
         branch: main
-        username: ${{ parameters.sonarqube_username }}
-        password: ${{ parameters.sonarqube_password }}
+        username: admin
+        password: adminadmin
 
     #- id: create-quay-repository
     #  name: Create Quay Repository
