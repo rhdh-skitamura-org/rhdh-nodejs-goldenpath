@@ -6,6 +6,8 @@ metadata:
   description: Provides the sample code and CI pipeline to build and deploy a sample application on OpenShift. 
   tags:
     - recommended
+  annotations:
+    backstage.io/techdocs-ref: url:https://github.com/rhdh-skitamura-org/rhdh-nodejs-goldenpath
 spec:
   owner: user:default/skitamura7446
   type: service
