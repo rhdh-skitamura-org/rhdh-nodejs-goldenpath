@@ -172,6 +172,7 @@ spec:
           cluster_url: ${{ parameters.cluster_url }}
           registry: ${{ parameters.registry }}
           registry_url: ${{ parameters.registry_url }}
+          ci_tool: ${{ parameters.ci_tool }}
         targetPath: ./tenant-app
 
     - id: timestamping
@@ -221,6 +222,7 @@ spec:
           cluster_url: ${{ parameters.cluster_url }}
           registry: ${{ parameters.registry }}
           registry_url: ${{ parameters.registry_url }}
+          ci_tool: ${{ parameters.ci_tool }}
         targetPath: ./tenant-manifest
 
     - id: publish-manifest-to-github

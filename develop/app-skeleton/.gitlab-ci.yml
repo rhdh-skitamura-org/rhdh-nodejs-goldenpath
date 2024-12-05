@@ -1,5 +1,9 @@
 stages:
   - build
+  - filter
+  - prepare
+  - scan
+  - deploy
 
 build-job:
   rules:
@@ -21,3 +25,81 @@ build-job:
   - techdocs-cli generate --no-docker --verbose
   - techdocs-cli publish --publisher-type awsS3 --storage-name $TECHDOCS_S3_BUCKET_NAME --entity $ENTITY_NAMESPACE/$ENTITY_KIND/${ENTITY_NAME::-4}
   #- techdocs-cli publish --publisher-type awsS3 --storage-name $TECHDOCS_S3_BUCKET_NAME --awsEndpoint $AWS_ENDPOINT --awsS3ForcePathStyle --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME
+
+# 新しいパイプラインロジック
+filter_catalog_info_changes:
+  stage: filter
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+  script:
+    - echo "Checking if changes are limited to 'catalog-info.yaml'..."
+    - |
+      CHANGED_FILES=$(git diff --name-only $CI_COMMIT_BEFORE_SHA $CI_COMMIT_SHA)
+      echo "Changed files: $CHANGED_FILES"
+      if [[ "$CHANGED_FILES" == "catalog-info.yaml" ]]; then
+        echo "'catalog-info.yaml' is the only changed file. Skipping pipeline."
+        exit 0
+      fi
+    - echo "Changes detected outside 'catalog-info.yaml'. Continuing pipeline execution."
+
+#prepare_workspaces:
+#  stage: prepare
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "develop"'
+#  script:
+#    - echo "Setting up workspaces..."
+#    - mkdir -p ./workspaces/shared
+#    - mkdir -p ./workspaces/manifest
+#    - mkdir -p ./workspaces/temp
+#    - mkdir -p ./workspaces/vul-cache
+#    - echo "Workspaces prepared."
+#
+#clone_repositories:
+#  stage: prepare
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "develop"'
+#  script:
+#    - echo "Cloning application repository..."
+#    - git clone "$GIT_APP_URL" ./workspaces/shared
+#    - cd ./workspaces/shared && git checkout "$CI_COMMIT_SHA"
+#    - echo "Cloning manifests repository..."
+#    - git clone "$GIT_MANIFESTS_URL" ./workspaces/manifest
+#    - cd ./workspaces/manifest && git checkout "develop"
+#    - echo "Repositories cloned successfully."
+
+#sonar_scan:
+#  stage: scan
+#  image: docker.io/sonarsource/sonar-scanner-cli:5.0
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "develop"'
+#  script:
+#    - echo "Creating sonar-project.properties..."
+#    - |
+#      echo "sonar.projectKey=$SONAR_PROJECT_KEY" > sonar-project.properties
+#      echo "sonar.host.url=$SONAR_HOST_URL" >> sonar-project.properties
+#      echo "sonar.sources=." >> sonar-project.properties
+#    - sonar-scanner
+
+#build_and_push:
+#  stage: build
+#  image: registry.access.redhat.io/rhel8/buildah:latest
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "develop"'
+#  script:
+#    - echo "Building and pushing image..."
+#    - buildah bud --tls-verify=false -t "$IMAGE_REGISTRY:latest" .
+#    - buildah push "$IMAGE_REGISTRY:latest"
+#
+#deploy_application:
+#  stage: deploy
+#  image: quay.io/argoproj/argocd:v2.2.2
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "develop"'
+#  script:
+#    - echo "Syncing application with ArgoCD..."
+#    - |
+#      if [ -z "$ARGOCD_AUTH_TOKEN" ]; then
+#        argocd login "$ARGOCD_SERVER" --username "$ARGOCD_USERNAME" --password "$ARGOCD_PASSWORD" --insecure
+#      fi
+#    - argocd app sync nodejs-develop-s01-app --revision "$CI_COMMIT_SHA" --username "$GIT_USER"
+#    - argocd app wait nodejs-develop-s01-app --health

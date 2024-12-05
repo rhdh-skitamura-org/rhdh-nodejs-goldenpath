@@ -24,29 +24,38 @@ metadata:
     title: Tekton Pipelines
     icon: dashboard
   annotations:
+    {%- if values.ci_tool == 'tekton' %}
+    janus-idp.io/tekton : ${{ values.app_name }}
+    janus-idp.io/tekton-enabled : 'true'
+    {%- endif %}
+    {%- if values.git == 'github' %}
+    github.com/project-slug: ${{ values.git_owner_name }}/${{ values.app_name }}-app
+    {%- endif %}
+    {%- if values.git == 'gitlab' %}
+    gitlab.com/project-slug: ${{ values.git_owner_name }}/${{ values.app_name }}-app
+    {%- endif %}
+    {%- if values.registry == 'quay' %}
+    quay.io/repository-slug: skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}
+    {%- endif %}
     argocd/app-selector: argocd.argoproj.io/instance=${{ values.app_name }}-bootstrap
     tektonci/build-namespace: ${{ values.app_name }}-develop
     backstage.io/kubernetes-id: ${{ values.app_name }}
     backstage.io/kubernetes-namespace: ${{ values.app_name }}-develop
-    janus-idp.io/tekton-enabled : 'true'
-    janus-idp.io/tekton : ${{ values.app_name }}
     #backstage.io/techdocs-ref: url:https://${{ values.git_host_url }}/${{ values.git_owner_name }}/${{ values.app_name }}-app
     backstage.io/techdocs-ref: url:https://github.com/rhdh-skitamura-org/rhdh-nodejs-goldenpath
-    github.com/project-slug: ${{ values.git_owner_name }}/${{ values.app_name }}-app
     #circleci.com/project-slug: ${{ values.git }}/${{ values.git_owner_name }}/${{ values.app_name }}-app
     sonarqube.org/project-key: ${{ values.app_name }}
     jira/project-key: KAN
-    quay.io/repository-slug: skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}
     sysdigcloud.com/kubernetes-namespace-name: ${{ values.app_name }}-develop
     sysdigcloud.com/kubernetes-workload-type: deployment
     sysdigcloud.com/kubernetes-workload-name: ${{ values.app_name }} 
     sysdigcloud.com/kubernetes-cluster-name: rosa-hcp-1544
-    sysdigcloud.com/registry-name: quay-registry-quay-quay.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com
+    sysdigcloud.com/registry-name: ${{ values.registry_url }}
     sysdigcloud.com/registry-repository: skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}
     #sysdigcloud.com/kubernetes-distribution: OCP4
     sysdigcloud.com/resource-name: ${{ values.app_name }}
     sysdigcloud.com/resource-type: "Deployment"
-    sysdigcloud.com/image-freetext: quay-registry-quay-quay.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com/skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}
+    sysdigcloud.com/image-freetext: ${{ values.registry_url }}/skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}
     #sysdigcloud.com/kubernetes-node-type: Worker
 spec:
   type: api 
