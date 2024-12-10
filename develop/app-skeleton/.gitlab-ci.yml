@@ -33,13 +33,21 @@ filter_catalog_info_changes:
     - if: '$CI_COMMIT_BRANCH == "develop"'
   script:
     - echo "Checking if changes are limited to 'catalog-info.yaml'..."
+
     - |
-      CHANGED_FILES=$(git diff --name-only $CI_COMMIT_BEFORE_SHA $CI_COMMIT_SHA)
+      if git rev-parse --quiet --verify "${CI_COMMIT_BEFORE_SHA}^{commit}" >/dev/null 2>&1; then
+        CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA")
+      else
+        CHANGED_FILES=$(git ls-tree -r --name-only HEAD)
+      fi
+
       echo "Changed files: $CHANGED_FILES"
+
       if [[ "$CHANGED_FILES" == "catalog-info.yaml" ]]; then
         echo "'catalog-info.yaml' is the only changed file. Skipping pipeline."
         exit 0
       fi
+
     - echo "Changes detected outside 'catalog-info.yaml'. Continuing pipeline execution."
 
 #prepare_workspaces:
