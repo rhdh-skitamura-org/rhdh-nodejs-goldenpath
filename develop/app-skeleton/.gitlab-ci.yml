@@ -104,7 +104,7 @@ build_and_push:
   script:
     - echo "Building and pushing image..."
     - buildah bud --storage-driver=vfs --format=${FORMAT} --tls-verify=false -t ${IMAGE} ${CONTEXT}
-    - buildah push ${IMAGE} --tls-verify=false
+    - buildah push --tls-verify=false docker://${IMAGE}
 #
 #deploy_application:
 #  stage: deploy
