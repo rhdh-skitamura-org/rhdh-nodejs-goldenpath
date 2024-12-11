@@ -1,7 +1,7 @@
 stages:
   - build
-  - filter
-  - prepare
+#  - filter
+#  - prepare
   - scan
   - deploy
 
@@ -27,28 +27,28 @@ build-job:
   #- techdocs-cli publish --publisher-type awsS3 --storage-name $TECHDOCS_S3_BUCKET_NAME --awsEndpoint $AWS_ENDPOINT --awsS3ForcePathStyle --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME
 
 # 新しいパイプラインロジック
-filter_catalog_info_changes:
-  stage: filter
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
-  script:
-    - echo "Checking if changes are limited to 'catalog-info.yaml'..."
-
-    - |
-      if git rev-parse --quiet --verify "${CI_COMMIT_BEFORE_SHA}^{commit}" >/dev/null 2>&1; then
-        CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA")
-      else
-        CHANGED_FILES=$(git ls-tree -r --name-only HEAD)
-      fi
-
-      echo "Changed files: $CHANGED_FILES"
-
-      if [[ "$CHANGED_FILES" == "catalog-info.yaml" ]]; then
-        echo "'catalog-info.yaml' is the only changed file. Skipping pipeline."
-        exit 0
-      fi
-
-    - echo "Changes detected outside 'catalog-info.yaml'. Continuing pipeline execution."
+#filter_catalog_info_changes:
+#  stage: filter
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "develop"'
+#  script:
+#    - echo "Checking if changes are limited to 'catalog-info.yaml'..."
+#
+#    - |
+#      if git rev-parse --quiet --verify "${CI_COMMIT_BEFORE_SHA}^{commit}" >/dev/null 2>&1; then
+#        CHANGED_FILES=$(git diff --name-only "$CI_COMMIT_BEFORE_SHA" "$CI_COMMIT_SHA")
+#      else
+#        CHANGED_FILES=$(git ls-tree -r --name-only HEAD)
+#      fi
+#
+#      echo "Changed files: $CHANGED_FILES"
+#
+#      if [[ "$CHANGED_FILES" == "catalog-info.yaml" ]]; then
+#        echo "'catalog-info.yaml' is the only changed file. Skipping pipeline."
+#        exit 0
+#      fi
+#
+#    - echo "Changes detected outside 'catalog-info.yaml'. Continuing pipeline execution."
 
 #prepare_workspaces:
 #  stage: prepare
@@ -86,25 +86,23 @@ sonar_scan:
     SONAR_HOST_URL: "http://sonarqube-sonarqube.sonarqube.svc:9000"
     SONAR_TOKEN: "$SONAR_TOKEN"
     SONAR_PROJECT_KEY: "${{ values.app_name }}"
-#  script:
-#    - echo "Creating sonar-project.properties..."
-#    - |
-#      echo "sonar.projectKey=$SONAR_PROJECT_KEY" > sonar-project.properties
-#      echo "sonar.host.url=$SONAR_HOST_URL" >> sonar-project.properties
-#      echo "sonar.sources=." >> sonar-project.properties
-#    - sonar-scanner
   script:
     - sonar-scanner -Dsonar.projectKey="${SONAR_PROJECT_KEY}" -Dsonar.host.url="${SONAR_HOST_URL}" -Dsonar.login="${SONAR_TOKEN}"
 
-#build_and_push:
-#  stage: build
-#  image: registry.access.redhat.io/rhel8/buildah:latest
-#  rules:
-#    - if: '$CI_COMMIT_BRANCH == "develop"'
-#  script:
-#    - echo "Building and pushing image..."
-#    - buildah bud --tls-verify=false -t "$IMAGE_REGISTRY:latest" .
-#    - buildah push "$IMAGE_REGISTRY:latest"
+build_and_push:
+  stage: build
+  image: registry.access.redhat.io/rhel8/buildah:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+  variables:
+    TLSVERIFY: "false"
+    IMAGE: ${{ values.registry_url }}/${{ values.app_name }}-develop/${{ values.app_name }}:$CI_COMMIT_SHA
+    FORMAT: "docker"
+    CONTEXT: "."
+  script:
+    - echo "Building and pushing image..."
+    - buildah bud --storage-driver=vfs --format=${FORMAT} --tls-verify=false -t ${IMAGE} ${CONTEXT}
+    - buildah push ${IMAGE} --tls-verify=false
 #
 #deploy_application:
 #  stage: deploy
