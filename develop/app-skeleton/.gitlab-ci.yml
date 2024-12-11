@@ -91,7 +91,7 @@ sonar_scan:
 
 build_and_push:
   stage: build
-  image: registry.access.redhat.io/rhel8/buildah:latest
+  image: registry.redhat.io/rhel8/buildah:latest 
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
   variables:
