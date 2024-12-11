@@ -92,6 +92,8 @@ sonar_scan:
 build_and_push:
   stage: build
   image: registry.redhat.io/rhel8/buildah:latest 
+  tags:
+    - openshift
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
   variables:
