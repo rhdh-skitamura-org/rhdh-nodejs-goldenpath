@@ -4,7 +4,7 @@ stages:
   - build
   - deploy
 
-build-job:
+upload_techdocs:
   stage: init
   rules:
   - changes:
@@ -98,7 +98,7 @@ build_and_push:
     - if: '$CI_COMMIT_BRANCH == "develop"'
   variables:
     TLSVERIFY: "false"
-    IMAGE: ${{ values.registry_url }}/${{ values.app_name }}-develop/${{ values.app_name }}:$CI_COMMIT_SHA
+    IMAGE: ${{ values.registry_url }}/${{ values.quay_org }}/${{ values.app_name }}-develop/${{ values.app_name }}:$CI_COMMIT_SHA
     FORMAT: "docker"
     CONTEXT: "."
   script:
