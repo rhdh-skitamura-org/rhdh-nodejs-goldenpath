@@ -101,11 +101,10 @@ build_and_push:
     IMAGE: ${{ values.registry_url }}/${{ values.app_name }}-develop/${{ values.app_name }}:$CI_COMMIT_SHA
     FORMAT: "docker"
     CONTEXT: "."
-    DOCKER_CONFIG: "/opt/quay-credentials"
   script:
     - echo "Building and pushing image..."
     - buildah bud --storage-driver=vfs --format=${FORMAT} --tls-verify=false -t ${IMAGE} ${CONTEXT}
-    - buildah push --storage-driver=vfs --tls-verify=false docker://${IMAGE}
+    - buildah push --storage-driver=vfs --digestfile /tmp/image-digest --tls-verify=false --authfile /opt/quay-credentials/auth.json "${IMAGE}" "docker://${IMAGE}" 
 #
 #deploy_application:
 #  stage: deploy
