@@ -5,6 +5,7 @@ commonLabels:
   backstage.io/kubernetes-id: ${{ values.app_name }}
 
 resources:
+  {%- if values.ci_tool == 'tekton' %}
   # pipelines
   - pipeline.yaml
   #- pipelinerun.yaml
@@ -35,5 +36,6 @@ resources:
   - es-quay-credentials.yaml
   - es-quay-basic-auth.yaml
   - es-argocd-credentials.yaml
+  {%- endif %}
   # configmaps
   - cm-argocd.yaml
