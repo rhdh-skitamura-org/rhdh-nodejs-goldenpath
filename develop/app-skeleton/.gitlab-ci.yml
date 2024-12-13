@@ -3,7 +3,7 @@ stages:
   - scan
   - build
   - git-clone
-  - kustomize-edit
+  - kustomize
   - git-commit-push
   - deploy
 
@@ -111,7 +111,8 @@ build_and_push:
 
 git-clone-manifests:
   stage: git-clone
-  image: cgr.dev/chainguard/git:root-2.47.1
+#  image: cgr.dev/chainguard/git:latest-root
+  image: registry.redhat.io/openshift-builds/openshift-builds-git-cloner-rhel9:1.2.0
   tags:
     - openshift
   variables:
