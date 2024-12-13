@@ -4,7 +4,7 @@ stages:
   - build
   - git-clone
   - kustomize
-  - git-commit-push
+  - git-push
   - deploy
 
 upload_techdocs:
@@ -115,14 +115,19 @@ git-clone-manifests:
   image: registry.redhat.io/openshift-builds/openshift-builds-git-cloner-rhel9:1.2.0
   tags:
     - openshift
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
   variables:
     #GITLAB_USER_NAME: $GITLAB_USER_NAME
     #GITLAB_USER_EMAIL: $GITLAB_USER_EMAIL
     MANIFEST_REPO_URL: https://${{ values.git_host_url }}/${{ values.git_owner_name }}/${{ values.app_name }}-manifest
   script:
-    - cp $GIT_CREDENTIALS $HOME/.git-credentials
+    - cp $GIT_CREDENTIALS .git-credentials
     # マニフェストリポジトリをクローン
     - git clone $MANIFEST_REPO_URL manifest-repo
+  artifacts:
+    paths:
+      - manifest-repo/
 
 kustomize-edit:
   stage: kustomize
@@ -131,21 +136,35 @@ kustomize-edit:
   image: asia.gcr.io/k8s-artifacts-prod/kustomize/kustomize:v5.0.1
   tags:
     - openshift
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
   script:
     - cd manifest-repo/kustomize/app/overlays/dev
     - kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=${{ values.registry_url }}/${{ values.quay_org }}/${{ values.app_name }}-develop/${{ values.app_name }}:$CI_COMMIT_SHA
-    
-#    # Kustomize のインストール
-#    - curl -s "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v5.4.0/kustomize_v5.4.0_linux_amd64.tar.gz" | tar xz
-#    - mv kustomize /usr/local/bin/
-#    
-#
-#    # Kustomize を使ってイメージを更新
-#    - kustomize edit set image ${QUAY_REGISTRY}/${APP_NAME}=${IMAGE_FULL}
-#    
-#    # 変更を確認（オプション）
-#    - git status
-#    - git diff
+  artifacts:
+    paths:
+      - manifest-repo/
+ 
+push-manifests:
+  stage: git-push
+  dependencies:
+    - kustomize-edit
+  image: cgr.dev/chainguard/git:root-2.39@sha256:7759f87050dd8bacabe61354d75ccd7f864d6b6f8ec42697db7159eccd491139
+  tags:
+    - openshift
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+  variables:
+    MANIFEST_COMMIT_BRANCH: "develop"
+  script:
+    - cp $GIT_CREDENTIALS .git-credentials
+    - cd manifest-repo
+    - git checkout ${MANIFEST_COMMIT_BRANCH}
+    - git diff
+    - git add -A ./kustomize/app/overlays/
+    - git commit -m "Change container image in manifests by $GITLAB_USER_NAME (<$GITLAB_USER_EMAIL>)"
+    - git push origin ${MANIFEST_COMMIT_BRANCH} 
+
 #
 #    # 変更がある場合のみコミット・プッシュ
 #    - |
