@@ -155,6 +155,8 @@ push-manifests:
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
   variables:
+    GITLAB_USER_NAME: $GITLAB_USER_NAME
+    GITLAB_USER_EMAIL: $GITLAB_USER_EMAIL
     MANIFEST_COMMIT_BRANCH: "develop"
   script:
     - cp $GIT_CREDENTIALS .git-credentials
@@ -162,7 +164,7 @@ push-manifests:
     - git checkout ${MANIFEST_COMMIT_BRANCH}
     - git diff
     - git add -A ./kustomize/app/overlays/
-    - git commit -m "Change container image in manifests by $GITLAB_USER_NAME (<$GITLAB_USER_EMAIL>)"
+    - git commit -m "Change container image in manifests by ${GITLAB_USER_NAME} (<${GITLAB_USER_EMAIL}>)"
     - git push origin ${MANIFEST_COMMIT_BRANCH} 
 
 #
