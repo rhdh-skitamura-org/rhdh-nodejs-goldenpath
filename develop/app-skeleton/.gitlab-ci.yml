@@ -2,6 +2,9 @@ stages:
   - init
   - scan
   - build
+  - git-clone
+  - kustomize-edit
+  - git-commit-push
   - deploy
 
 upload_techdocs:
@@ -105,6 +108,58 @@ build_and_push:
     - echo "Building and pushing image..."
     - buildah bud --storage-driver=vfs --format=${FORMAT} --tls-verify=false -t ${IMAGE} ${CONTEXT}
     - buildah push --storage-driver=vfs --digestfile /tmp/image-digest --tls-verify=false --authfile /opt/quay-credentials/auth.json "${IMAGE}" "docker://${IMAGE}" 
+
+git-clone-manifests:
+  stage: git-clone
+  image: cgr.dev/chainguard/git:root-2.47.1
+  tags:
+    - openshift
+  variables:
+    #GITLAB_USER_NAME: $GITLAB_USER_NAME
+    #GITLAB_USER_EMAIL: $GITLAB_USER_EMAIL
+    MANIFEST_REPO_URL: https://${{ values.git_host_url }}/${{ values.git_owner_name }}/${{ values.app_name }}-manifest
+  script:
+    - cp $GIT_CREDENTIALS $HOME/.git-credentials
+    # マニフェストリポジトリをクローン
+    - git clone $MANIFEST_REPO_URL manifest-repo
+
+kustomize-edit:
+  stage: kustomize
+  dependencies:
+    - git-clone-manifests
+  image: asia.gcr.io/k8s-artifacts-prod/kustomize/kustomize:v5.0.1
+  tags:
+    - openshift
+  script:
+    - cd manifest-repo/kustomize/app/overlays/dev
+    - kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=${{ values.registry_url }}/${{ values.quay_org }}/${{ values.app_name }}-develop/${{ values.app_name }}:$CI_COMMIT_SHA
+    
+#    # Kustomize のインストール
+#    - curl -s "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v5.4.0/kustomize_v5.4.0_linux_amd64.tar.gz" | tar xz
+#    - mv kustomize /usr/local/bin/
+#    
+#
+#    # Kustomize を使ってイメージを更新
+#    - kustomize edit set image ${QUAY_REGISTRY}/${APP_NAME}=${IMAGE_FULL}
+#    
+#    # 変更を確認（オプション）
+#    - git status
+#    - git diff
+#
+#    # 変更がある場合のみコミット・プッシュ
+#    - |
+#      if [ -n "$(git status --porcelain)" ]; then
+#        git config user.email "ci-bot@example.com"
+#        git config user.name "CI Bot"
+#        git add kustomization.yaml
+#        git commit -m "Update image to ${IMAGE_FULL}"
+#        git push origin main
+#      else
+#        echo "No changes to commit."
+#      fi
+#
+
+
 #
 #deploy_application:
 #  stage: deploy
