@@ -155,11 +155,14 @@ push-manifests:
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
   variables:
-    GITLAB_USER_NAME: $GITLAB_USER_NAME
-    GITLAB_USER_EMAIL: $GITLAB_USER_EMAIL
     MANIFEST_COMMIT_BRANCH: "develop"
   script:
+    - export HOME=$(pwd)
     - cp $GIT_CREDENTIALS .git-credentials
+    - git config --global credential.helper store
+    - git config --global user.name $CI_GITLAB_USER_NAME
+    - git config --global user.email $CI_GITLAB_USER_EMAIL
+    - git config --global --add safe.directory $HOME/manifest-repo
     - cd manifest-repo
     - git checkout ${MANIFEST_COMMIT_BRANCH}
     - git diff
