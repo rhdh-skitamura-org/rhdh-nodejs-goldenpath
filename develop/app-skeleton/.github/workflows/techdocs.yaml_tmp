@@ -15,14 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TECHDOCS_S3_BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ap-northeast-1
-      ENTITY_NAMESPACE: 'default'
-      ENTITY_KIND: 'Component'
-      #ENTITY_NAME: ${{ github.event.repository.name }}-app
-      ENTITY_NAME: ${{ github.event.repository.name }}
+      TECHDOCS_S3_BUCKET_NAME1: ${{ values.app_name }}
+      TECHDOCS_S3_BUCKET_NAME2: ${{ "{{" }} secrets.BUCKET_NAME {{ "}}" }}
+      TECHDOCS_S3_BUCKET_NAME3: ${{ "${{" }} secrets.BUCKET_NAME {{ "}}" }}
+      TECHDOCS_S3_BUCKET_NAME4: ${{ "{{" }} secrets.BUCKET_NAME }}
+      TECHDOCS_S3_BUCKET_NAME5: ${{ "${{" }} secrets.BUCKET_NAME }}
+      TECHDOCS_S3_BUCKET_NAME6: ${{ "{{" }} secrets.BUCKET_NAME {{ "}}" }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
