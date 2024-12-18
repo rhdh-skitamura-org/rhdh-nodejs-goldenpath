@@ -159,8 +159,8 @@ spec:
       action: fetch:template
       input:
         url: ./app-skeleton
-        copyWithoutTemplating:
-          - .github/workflows/
+        #copyWithoutTemplating:
+        #  - .github/workflows/
         values:
           git: ${{ parameters.git }}
           git_host_url: ${{ parameters.git_host_url }}
