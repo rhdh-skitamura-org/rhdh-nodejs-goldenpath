@@ -18,8 +18,8 @@ jobs:
       TECHDOCS_S3_BUCKET_NAME1: ${{ values.app_name }}
       TECHDOCS_S3_BUCKET_NAME2: ${{ "{{" }} secrets.BUCKET_NAME {{ "}}" }}
       TECHDOCS_S3_BUCKET_NAME3: ${{ "${{" }} secrets.BUCKET_NAME {{ "}}" }}
-      TECHDOCS_S3_BUCKET_NAME4: ${{ "{{" }} secrets.BUCKET_NAME {{ "}}" }}
-      TECHDOCS_S3_BUCKET_NAME5: ${{ "{{" }} secrets.BUCKET_NAME {{ "}}" }}
+      TECHDOCS_S3_BUCKET_NAME4: ${{ "{{" }} secrets.BUCKET_NAME }}
+      TECHDOCS_S3_BUCKET_NAME5: ${{ "${{" }} secrets.BUCKET_NAME }}
       TECHDOCS_S3_BUCKET_NAME6: ${{ "{{" }} secrets.BUCKET_NAME {{ "}}" }}
     steps:
       - name: Checkout code
