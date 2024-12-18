@@ -14,7 +14,9 @@ jobs:
     name: Publish techdocs site
     runs-on: ubuntu-latest
 
+{{=<% %>=}}
     env:
+      TECHDOCS_S3_BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
       TECHDOCS_S3_BUCKET_NAME: ${{ '{' }}{{ '{' }} secrets.BUCKET_NAME {{ '}' }}{{ '}' }}
       AWS_ACCESS_KEY_ID: ${{ '{' }}{{ '{' }} secrets.AWS_ACCESS_KEY_ID {{ '}' }}{{ '}' }}
       AWS_SECRET_ACCESS_KEY: ${{ '{' }}{{ '{' }} secrets.AWS_SECRET_ACCESS_KEY {{ '}' }}{{ '}' }}
@@ -23,6 +25,8 @@ jobs:
       ENTITY_KIND: 'Component'
       #ENTITY_NAME: ${{ github.event.repository.name }}-app
       ENTITY_NAME: ${{ '{' }}{{ '{' }} github.event.repository.name {{ '}' }}{{ '}' }} 
+                   ${{ '{' }}{{ '{' }} secrets.BUCKET_NAME          {{ '}' }}{{ '}' }}
+<%={{ }}=%>
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
