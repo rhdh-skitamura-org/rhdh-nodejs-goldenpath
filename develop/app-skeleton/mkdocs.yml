@@ -6,6 +6,14 @@ edit_uri: edit/main/docs
 plugins:
   - techdocs-core
 
+theme:
+  name: material
+  font:
+    text:
+      - "Arial"
+      - "Helvetica"
+      - "sans-serif"
+
 # Note for content editors, edit only the section below
 nav:
   - ${{ values.app_name }} Documentation: index.md
