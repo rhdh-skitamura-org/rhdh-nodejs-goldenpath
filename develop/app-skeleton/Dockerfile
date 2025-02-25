@@ -3,7 +3,7 @@ FROM registry.access.redhat.com/ubi9/nodejs-20-minimal:latest AS deps
 
 COPY package.json package-lock.json ./
 RUN npm ci
-RUN npm audit fix 
+RUN npm audit fix --force
 
 # Stage 2 - Build the source code
 FROM registry.access.redhat.com/ubi9/nodejs-20-minimal:latest AS builder
