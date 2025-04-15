@@ -45,7 +45,7 @@ metadata:
     backstage.io/techdocs-ref: url:https://github.com/rhdh-skitamura-org/rhdh-nodejs-goldenpath
     #circleci.com/project-slug: ${{ values.git }}/${{ values.git_owner_name }}/${{ values.app_name }}-app
     sonarqube.org/project-key: ${{ values.app_name }}
-    jira/project-key: KAN
+    jira/project-key: SMS
     sysdigcloud.com/kubernetes-namespace-name: ${{ values.app_name }}-develop
     sysdigcloud.com/kubernetes-workload-type: deployment
     sysdigcloud.com/kubernetes-workload-name: ${{ values.app_name }} 
