@@ -83,7 +83,7 @@ spec:
                 registry_url:
                   title: Image Registry Host URL
                   type: string
-                  default: "quay-registry-quay-quay.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com"
+                  default: "quay-registry-quay-quay.apps.rosa.sb1237-rosa.b20c.p3.openshiftapps.com"
                   description: Host for storing image URL
 
     - title: Provide information about the git to used
