@@ -17,7 +17,7 @@ spec:
       required:
         - app_name
         - owner
-        - system
+        #- system
       properties:
         app_name:
           title: Repository Name
@@ -37,14 +37,14 @@ spec:
               kind:
                 - Group
                 - User
-        system:
-          title: System
-          type: string
-          ui:field: EntityPicker
-          ui:options:
-            catalogFilter:
-              kind:
-                - System
+        #system:
+        #  title: System
+        #  type: string
+        #  ui:field: EntityPicker
+        #  ui:options:
+        #    catalogFilter:
+        #      kind:
+        #        - System
         cluster_url:
           title: Cluster URL
           type: string
@@ -167,7 +167,8 @@ spec:
           git_owner_name: ${{ parameters.git_owner_name }}
           app_name: ${{ parameters.app_name }}
           owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
+          system: system:default/test-system-github
+          #system: ${{ parameters.system }}
           description: ${{ parameters.description }}
           cluster_url: ${{ parameters.cluster_url }}
           registry: ${{ parameters.registry }}
@@ -218,7 +219,8 @@ spec:
           git_owner_name: ${{ parameters.git_owner_name }}
           app_name: ${{ parameters.app_name }}
           owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
+          #system: ${{ parameters.system }}
+          system: system:default/test-system-github
           description: ${{ parameters.description }}
           cluster_url: ${{ parameters.cluster_url }}
           registry: ${{ parameters.registry }}
