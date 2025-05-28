@@ -66,6 +66,8 @@ spec:
   git: ${{ values.git }}
   git_host_url: ${{ values.git_host_url }}
   git_owner_name: ${{ values.git_owner_name }}
+  providesApis:
+    - ${{ values.app_name }}-api
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
