@@ -267,7 +267,7 @@ spec:
         repoContentsUrl: ${{ steps['publish-app-to-github'].output.repoContentsUrl }}
         catalogInfoPath: "/api-catalog.yaml"
 
-#    - id: register-to-gitlab
+#    - id: register-component-to-gitlab
 #      if: ${{ parameters.git == "gitlab" }}
 #      name: Registering the Catalog Info Component to GitLab
 #      action: catalog:register
@@ -329,8 +329,8 @@ spec:
       - title: Open the Catalog Info Component
         if: ${{ parameters.git == "github" }}
         icon: catalog
-        entityRef: ${{ steps['register-to-github'].output.entityRef }}
+        entityRef: ${{ steps['register-component-to-github'].output.entityRef }}
       - title: Open the Catalog Info Component
         if: ${{ parameters.git == "gitlab" }}
         icon: catalog
-        entityRef: ${{ steps['register-to-gitlab'].output.entityRef }}
+        entityRef: ${{ steps['register-component-to-gitlab'].output.entityRef }}
