@@ -11,7 +11,7 @@ spec:
   definition: |
     openapi: 3.0.3
     info:
-      title: Inline Sample API
+      title: Sample API
       version: 1.0.0
       description: >
         最小構成の OpenAPI 
