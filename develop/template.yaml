@@ -251,13 +251,21 @@ spec:
 #        defaultBranch: develop
 #        protectDefaultBranch: false
 
-    - id: register-to-github
+    - id: register-component-to-github
       if: ${{ parameters.git == "github" }}
       name: Registering the Catalog Info Component to GitHub
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish-app-to-github'].output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml"
+
+    - id: register-api-to-github
+      if: ${{ parameters.git == "github" }}
+      name: Registering the API Catalog to GitHub
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-app-to-github'].output.repoContentsUrl }}
+        catalogInfoPath: "/api-catalog.yaml"
 
 #    - id: register-to-gitlab
 #      if: ${{ parameters.git == "gitlab" }}
@@ -266,6 +274,15 @@ spec:
 #      input:
 #        repoContentsUrl: ${{ steps['publish-app-to-gitlab'].output.repoContentsUrl }}
 #        catalogInfoPath: "/catalog-info.yaml"
+#
+#    - id: register-api-to-gitlab
+#      if: ${{ parameters.git == "gitlab" }}
+#      name: Registering the API Catalog to GitLab
+#      action: catalog:register
+#      input:
+#        repoContentsUrl: ${{ steps['publish-app-to-gitlab'].output.repoContentsUrl }}
+#        catalogInfoPath: "/api-catalog.yaml"
+
 
     - id: create-argocd-resources
       name: Create ArgoCD Resources
