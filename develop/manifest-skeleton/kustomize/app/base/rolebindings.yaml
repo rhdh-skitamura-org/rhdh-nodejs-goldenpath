@@ -3,7 +3,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: system:image-puller
-  namespace: ${{ values.app_name }}-develop
+  namespace: ${{ values.app_name }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -18,7 +18,7 @@ kind: RoleBinding
 metadata:
   creationTimestamp: null
   name: system:image-puller
-  namespace: app-develop
+  namespace: ${{ values.app_name }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

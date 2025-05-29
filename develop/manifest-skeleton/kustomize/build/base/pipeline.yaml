@@ -42,10 +42,10 @@ spec:
   - name: image-registry
     type: string
     {%- if values.registry == 'openshift' %}
-    default: ${{ values.registry_url }}/${{ values.app_name }}-develop
+    default: ${{ values.registry_url }}/${{ values.app_name }}
     {%- endif %}
     {%- if values.registry == 'quay' %}
-    default: ${{ values.registry_url }}/skitamura-quay-org/${{ values.app_name }}-develop
+    default: ${{ values.registry_url }}/skitamura-quay-org/${{ values.app_name }}
     {%- endif %}
 #  - name: git-manifests-user-access-token 
 #    type: string
@@ -108,7 +108,7 @@ spec:
       workspace: quay-credentials
     params:
     - name: IMAGE
-      #value: image-registry.openshift-image-registry.svc:5000/${{ values.app_name }}-develop/${{ values.app_name }}:$(params.git-revision)
+      #value: image-registry.openshift-image-registry.svc:5000/${{ values.app_name }}/${{ values.app_name }}:$(params.git-revision)
       value: $(params.image-registry)/${{ values.app_name }}:$(params.git-revision)
     - name: CONTEXT
       value: $(workspaces.source.path)

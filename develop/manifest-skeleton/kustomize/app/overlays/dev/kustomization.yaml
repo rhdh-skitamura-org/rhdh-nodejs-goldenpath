@@ -7,14 +7,14 @@ resources:
 commonLabels:
   backstage.io/kubernetes-id: ${{ values.app_name }}
 
-namespace: ${{ values.app_name }}-develop
+namespace: ${{ values.app_name }}
 
 images:
 - digest: sha256:085b9d73976428c1f6c2966fd6292306a6d2c60e1f6a5648fcc7b303f937f076
   name: ___IMAGE_URL___@___IMAGE_DIGEST___
   {%- if values.registry == 'openshift' %}
-  newName: ${{ values.registry_url }}/${{ values.app_name }}-develop/${{ values.app_name }}
+  newName: ${{ values.registry_url }}/${{ values.app_name }}/${{ values.app_name }}
   {%- endif %}
   {%- if values.registry == 'quay' %}
-  newName: ${{ values.registry_url }}/skitamura-quay-org/${{ values.app_name }}-develop/${{ values.app_name }}
+  newName: ${{ values.registry_url }}/skitamura-quay-org/${{ values.app_name }}/${{ values.app_name }}
   {%- endif %}

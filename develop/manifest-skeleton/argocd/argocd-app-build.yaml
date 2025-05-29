@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ${{ values.app_name }}-dev-build
+  name: ${{ values.app_name }}-build
   namespace: openshift-gitops
   finalizers:
     - resources-finalizer.argocd.argoproj.io  
@@ -16,7 +16,7 @@ spec:
     path: ./kustomize/build/overlays/github
   destination:
     server: https://kubernetes.default.svc
-    namespace: ${{ values.app_name }}-develop
+    namespace: ${{ values.app_name }}
   syncPolicy:
     automated: 
       prune: true

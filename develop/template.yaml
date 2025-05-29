@@ -22,7 +22,7 @@ spec:
         app_name:
           title: Repository Name
           type: string
-          default: "nodejs-develop"
+          default: "nodejs-dev-"
         description:
           title: Description
           type: string

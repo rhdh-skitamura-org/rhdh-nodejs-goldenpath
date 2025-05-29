@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${{values.app_name}}-develop
+  name: ${{values.app_name}}
   annotations:
     openshift.io/node-selector: ""
   labels:
