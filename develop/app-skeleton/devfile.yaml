@@ -1,6 +1,6 @@
 schemaVersion: 2.2.0
 metadata:
-  name: nodejs
+  name: ${{ values.app_name }}
   displayName: Node.js
 components:
   - name: development-tooling
