@@ -59,7 +59,7 @@ metadata:
 #    sysdigcloud.com/image-freetext: ${{ values.registry_url }}/skitamura-quay-org/${{ values.app_name }}/${{ values.app_name }}
     #sysdigcloud.com/kubernetes-node-type: Worker
 spec:
-  type: api 
+  type: service
   system: ${{ values.system | dump }}
   lifecycle: production
   owner: ${{ values.owner | dump }}
